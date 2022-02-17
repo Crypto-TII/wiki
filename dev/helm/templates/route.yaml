@@ -1,0 +1,28 @@
+{{- if .Values.route.enabled }}
+  {{- $fullName := include "wiki.fullname" . -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    {{- include "wiki.labels" . | nindent 4 }}
+{{- if .Values.route.labels }}
+{{ toYaml .Values.route.labels | indent 4 }}
+{{- end }}
+  annotations:
+{{- if .Values.route.annotations }}
+{{ toYaml .Values.route.annotations | indent 4 }}
+{{- end }}
+  name: {{ $fullName }}
+spec:
+  host: {{ .Values.route.path }}
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: {{ $fullName }}
+    weight: 100
+  wildcardPolicy: None
+{{- end }}

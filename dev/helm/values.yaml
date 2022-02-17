@@ -51,6 +51,13 @@ service:
   # httpsPort: 443
   # annotations: {}
 
+# Openshift route
+route:
+  enabled: true
+  labels: {}
+  annotations: {}
+  path: "wiki.minikube.local"
+
 ingress:
   enabled: true
   annotations: {}
